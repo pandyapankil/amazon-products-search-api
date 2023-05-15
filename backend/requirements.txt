@@ -3,3 +3,4 @@ uvicorn
 beautifulsoup4
 pyppeteer
 asyncio
+pydantic[email]
