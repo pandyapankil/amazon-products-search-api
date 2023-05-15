@@ -1,7 +1,9 @@
+from typing import Optional
+
 import uvicorn
 from bs4 import BeautifulSoup
 from core.config import settings
-from fastapi import FastAPI, HTTPException, status
+from fastapi import BackgroundTasks, FastAPI, HTTPException, status
 from pydantic import EmailStr
 from scrap_script import scrap_page
 
@@ -74,14 +76,26 @@ async def scrap(search_keywords, products_count):
 
 
 @app.get("/search")
-async def get_products(search_keywords: str, products_count: int = 10):
+async def get_products_wo_email(search_keywords: str, products_count: int = 10):
 	if products_count > 1000:
 		raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="products_count must not be greater than 100")
 
 	keywords_to_search = "+".join(search_keywords.split())
 	result = await scrap(keywords_to_search, products_count)
-
 	return result
+
+
+@app.get("/search_with_email")
+async def get_products_with_email(
+	email: EmailStr, search_keywords: str, background_tasks: BackgroundTasks, products_count: int = 10
+):
+	if email is None:
+		raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email address can not be empty")
+
+	keywords_to_search = "+".join(search_keywords.split())
+	background_tasks.add_task(scrap, search_keywords=keywords_to_search, products_count=products_count)
+
+	return dict(message="Result will be sent over email.")
 
 
 # TODO: 1 separate endpoint which will take an email id from user if products_count is g.t. 20
