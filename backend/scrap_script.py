@@ -9,7 +9,7 @@ pyppeteer = pyppeteer_patch.get_patched_pyppeteer()
 
 async def scrap_page(url):
 	browser = await pyppeteer.launch(
-		headless=True,
+		headless=False,
 		args=[
 			'--start-maximized',
 			'--no-sandbox',
