@@ -18,14 +18,10 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-    volumes:
-      - ./backend/main.py:/app/main.py
 
   scraper:
     image: myapp
     command: python scrap_main.py
-    volumes:
-      - ./backend/scrap_main.py:/app/scrap_main.py
 
   celery:
     image: myapp
@@ -35,8 +31,6 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-    volumes:
-      - ./backend/celery_tasks.py:/app/celery_tasks.py
 
   redis:
     image: redis:latest
