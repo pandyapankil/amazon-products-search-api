@@ -5,7 +5,7 @@ FROM python:3.10
 RUN useradd -ms /bin/bash celeryuser
 
 # Set up environment variables
-ENV DEBUG=true
+ENV DEBUG=false
 
 # Install necessary dependencies
 RUN apt-get update \
