@@ -6,3 +6,5 @@ asyncio
 pydantic[email]
 celery
 redis
+aiohttp
+requests
