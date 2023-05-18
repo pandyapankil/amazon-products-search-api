@@ -31,6 +31,8 @@ async def scrap(search_keywords: str, products_count: int):
 			else:
 				product_name_tag = result.find('h2', {'class': 'a-size-mini a-spacing-none a-color-base s-line-clamp-4'})
 			if product_name_tag is None:
+				product_name_tag = result.find('span', {'class': 'a-size-base-plus a-color-base a-text-normal'})
+			if product_name_tag is None:
 				print("product is None")
 				continue
 			product_name = product_name_tag.text.strip()
